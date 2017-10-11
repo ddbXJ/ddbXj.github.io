@@ -8,8 +8,8 @@ header-img: ""
 ---
 
 
-最近在工作中跟小伙伴聊到spring事务,提起同一个方法中,方法a调用方法b,a没有加`@Transactional`注解,b有加注解,这种情况下,spring声明式事务不会生效.
-究其原因,是spring的事务是由AOP实现,导致了这种方法内调用不会生效.<br>
+最近在工作中跟小伙伴聊到spring事务,提起同一个类中,方法a调用方法b,a没有加`@Transactional`注解,b有加注解,这种情况下,spring声明式事务不会生效.
+究其原因,是spring的事务是由AOP实现,导致了这种类中方法间调用不会生效.<br>
 同事J让我具体讲下实现细节,我愣是想不起来....<br>
 翻了下自己的wiz note,两年前还研究过,竟然就忘了.借这个机会,自己也重新再梳理一下Spring AOP的细节.<br>
 
@@ -50,40 +50,39 @@ public class MyMethodBeforeAdvice implements MethodBeforeAdvice {
 }
 ```
 
-1. 通过xml配置方式配置Bean<br>
+1. 通过xml配置方式配置Bean
+	```xml
+	<!-- beans.xml-->
+	<!-- 在这个文件里要配置三个东西-->
+	<!-- 1.被代理的对象-->
+	<!-- 2.通知（例如前置通知MethodBeforeAdvice）-->
+	<!-- 3.代理对象（ProxyFactoryBean）-->
 
-```xml
-<!-- beans.xml-->
-<!-- 在这个文件里要配置三个东西-->
-<!-- 1.被代理的对象-->
-<!-- 2.通知（例如前置通知MethodBeforeAdvice）-->
-<!-- 3.代理对象（ProxyFactoryBean）-->
+	<!-- 要被代理的对象,也就是接口的实现类 -->
+	<bean id="aopServiceImpl" class="aop.AopServiceImpl" />
 
-<!-- 要被代理的对象,也就是接口的实现类 -->
-<bean id="aopServiceImpl" class="aop.AopServiceImpl" />
+	<!-- 通知（前置通知） -->
+	<bean id="myMethodBeforeAdvice" class="aop.MyMethodBeforeAdvice" />
+	    
 
-<!-- 通知（前置通知） -->
-<bean id="myMethodBeforeAdvice" class="aop.MyMethodBeforeAdvice" />
-    
+	<!--代理对象-->
+	<bean id="proxyFactoryBean" class="org.springframework.aop.framework.ProxyFactoryBean" >
+	    <!--代理的接口-->
+	    <property name="proxyInterfaces">
+	        <list>
+	            <value>aop.AopService</value>
+	        </list>
+	    </property>
+	    <!--通知器(拦截器)名字-->
+	    <property name="interceptorNames">
+	        <value>myMethodBeforeAdvice</value>
+	    </property>
+	    <!--目标对象(需要被增强\被代理的对象)-->
+	    <property name="target" ref="aopServiceImpl" />
+	</bean>
+	``` 
 
-<!--代理对象-->
-<bean id="proxyFactoryBean" class="org.springframework.aop.framework.ProxyFactoryBean" >
-    <!--代理的接口-->
-    <property name="proxyInterfaces">
-        <list>
-            <value>aop.AopService</value>
-        </list>
-    </property>
-    <!--通知器(拦截器)名字-->
-    <property name="interceptorNames">
-        <value>myMethodBeforeAdvice</value>
-    </property>
-    <!--目标对象(需要被增强\被代理的对象)-->
-    <property name="target" ref="aopServiceImpl" />
-</bean>
-``` 
-
-###### 测试代码
+1. 测试代码
 ```java
 public class AopTest {
     public static void main(String[] args) {
