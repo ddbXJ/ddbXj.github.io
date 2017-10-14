@@ -13,6 +13,7 @@ header-img: ""
 同事J让我具体讲下实现细节,我愣是想不起来....<br>
 翻了下自己的wiz note,两年前还研究过,竟然就忘了.借这个机会,自己也重新再梳理一下Spring AOP的细节.<br>
 
+---
 
 #### 从添加一个简单的前置通知入手，回顾AOP
 ##### 几个概念
@@ -101,10 +102,14 @@ hello!
 * `AopService aopService = (AopService) context.getBean("proxyFactoryBean");`
 > 这行大体思想是通过`applicationContext`获取到`AopService`的代理对象`proxyFactoryBean`
 `proxyFactoryBean`在被初始化时,会被装载进所有有关aop的信息,并持有target的实例,变成该实例的代理对象
-所以获得到的`aopService`实际上是`aopServiceImpl`实例的代理对象
+所以获得到的`aopService`实际上是`aopServiceImpl`实例的代理对象 <br><br>
+> 大致的调用图解如下:
+![aop1](/img/aop1.jpg)
 
 * `aopService.sayHello();`
-> 这行的调用,实际会通过代理对象去调用实际的目标对象`(target)`,在调用过程中,所有切面的工作,都会由代理来完成
+> 这行的调用,实际会通过代理对象去调用实际的目标对象`(target)`,在调用过程中,所有切面的工作,都会由代理来完成 <br><br>
+> 大致的调用图解如下:
+![aop2](/img/aop2.jpg)
 
 
 未完...
