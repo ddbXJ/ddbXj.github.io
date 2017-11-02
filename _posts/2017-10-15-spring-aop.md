@@ -499,8 +499,9 @@ public class ThrowsAdviceInterceptor implements MethodInterceptor, AfterAdvice {
 ```
 当通知器链上的`invoke()`方法都被调用过之后,`ReflectiveMethodInvocation.invokeJoinpoint()`方法会被调用,这时会调用`AopUtils.invokeJoinpointUsingReflection`,通过反射执行真正的方法调用.
 
+---
 
-
+所以再回过头来看文章最前面的问题:同一个实现类中,`methodA`调用`methodB`,只在`methodB`上声明了事务,这时事务会失效.原因就是`Spring`的事务是基于AOP来实现的,而AOP实际上就是利用了动态代理,在调用发起时,首先是走的代理类,然后代理类去调用`methodA`的时候,最终会调用到真正实现类的`methodA`,这时候,`methodA`里去调用`methodB`,其实就是普通的类间方法调用了,不会走AOP,从而事务也就失效了.
 
 
 
