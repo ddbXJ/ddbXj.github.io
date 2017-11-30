@@ -128,6 +128,10 @@ private ExtensionLoader(Class<?> type) {
 
 ```
 
+下面这个图先给出`ExtensionLoader.getExtensionLoader(ExtensionFactory.class).getAdaptiveExtension()`的调用图解,后面代码具体分析
+![extensionFactory](/img/extensionFactory.jpg)
+
+
 先看`ExtensionLoader.getExtensionLoader(ExtensionFactory.class)`
 `ExtensionFactory`本身被`SPI`标注,是生成扩展类的工厂: 指定`class type`和`name`,可以获取相应的Extension(T)
 ```
@@ -627,10 +631,13 @@ public class <扩展点接口名>$Adpative implements <扩展点接口> {
     }  
 }  
 ```
+这里可以看出,自动生成的代码,会从dubbo规约的`URL`上去拿指定的`key`对应的`value`,然后把`value`作为`getExtension`时候的`name`,所以就实现了,配置了什么,实际运行的时候,就加载的是什么.
 
 所以看到这里,对官方文档里所谓的`扩展点自适应`便有了更清晰的认识:
 一个接口的实现者可能有多个，并不直接去注入一个具体的实现者，
 而是注入一个动态生成的实现者，这个动态生成的实现者的逻辑是确定的，能够根据不同的参数来使用不同的实现者实现相应的方法。
+
+dubbo在整体架构上定义了一系列的spi接口,并给出了所有默认的实现和可选的各种方案,开发者可以根据情况自选,也可以自己开发.灵活性很高
 
 
 ---
@@ -641,7 +648,7 @@ dubbo框架里大量使用了缓存,可以通过`ExtensionLoader`大致看一下
 
 
 ```
-//看一下ExtensionLoader的静态成员变量:
+//看一下ExtensionLoader的静态成员变量,这是全局的缓存:
 
 	//所有标注了SPI注解的接口对应的`ExtensionLoader`
     private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> EXTENSION_LOADERS = new ConcurrentHashMap<Class<?>, ExtensionLoader<?>>();
@@ -650,7 +657,7 @@ dubbo框架里大量使用了缓存,可以通过`ExtensionLoader`大致看一下
     private static final ConcurrentMap<Class<?>, Object> EXTENSION_INSTANCES = new ConcurrentHashMap<Class<?>, Object>();
 
 
-//看一下ExtensionLoader的非静态成员变量:
+//看一下ExtensionLoader的非静态成员变量,这是针对每个ExtensionLoader实例的缓存:
 
 	//SPI类型
     private final Class<?> type;
@@ -658,21 +665,29 @@ dubbo框架里大量使用了缓存,可以通过`ExtensionLoader`大致看一下
     //拓展类工厂: 指定type和name,可以获取相应的Extension(T)
     private final ExtensionFactory objectFactory;
 
+    //拓展类(extension)的名字(name)标识
     private final ConcurrentMap<Class<?>, String> cachedNames = new ConcurrentHashMap<Class<?>, String>();
     
+    //缓存的extension实例
     private final Holder<Map<String, Class<?>>> cachedClasses = new Holder<Map<String,Class<?>>>();
 
+    //可自动激活的实现类,name->Activate,其中Activate包含了这个自动激活的类的各种信息,比如时序
     private final Map<String, Activate> cachedActivates = new ConcurrentHashMap<String, Activate>();
 
+    //自适应实现类的class,如果一个接口有实现类直接注解了@Adaptive,则就是那个类;如果是自适应的,就是动态创建的类
     private volatile Class<?> cachedAdaptiveClass = null;
 
+    //name->holder的缓存map,holder持有的是extension实例
     private final ConcurrentMap<String, Holder<Object>> cachedInstances = new ConcurrentHashMap<String, Holder<Object>>();
 
+    //接口的spi里注解的默认值
     private String cachedDefaultName;
 
+    //被缓存的自适应实例Holder,Holder可以获取对应的实例
     private final Holder<Object> cachedAdaptiveInstance = new Holder<Object>();
     private volatile Throwable createAdaptiveInstanceError;
 
+    //缓存的wrapper类
     private Set<Class<?>> cachedWrapperClasses;
     
     private Map<String, IllegalStateException> exceptions = new ConcurrentHashMap<String, IllegalStateException>();
@@ -683,12 +698,16 @@ dubbo框架里大量使用了缓存,可以通过`ExtensionLoader`大致看一下
 
 ## 应用
 
-在我们业务中,比较常用的,是基于常用的一些操作来写dubbo filter
+在我们业务中,比较常用的,是基于常用的一些操作来写`dubbo filter`.
+
 dubbo的扩展点加载机制,类似于SPI机制,都是基于固定的路径来约定,一般自己添加的扩展类,都放在自己jar包下的`META-INF/dubbo/接口全限定名`里,然后命名需要符合规范
-例如,我们自己添加一个dubbo filter,实现了dubbo的Filter接口,然后需要声明在自己项目的`META-INF/dubbo/com.alibaba.dubbo.rpc.Filter`里,
+例如,我们自己添加一个`dubbo filter`,实现了dubbo的`Filter`接口,然后需要声明在自己项目的固定目录下,
 ```
+META-INF/dubbo/com.alibaba.dubbo.rpc.Filter : 
 xxx=com.abc.XxxFilter
 ```
+基于对源码的整体认识,这里也不难理解.每个自己写的`Filter`,会在实现类上注解`@Activate`,在加载的时候,会被加载到`ExtensionLoader<Filter>`实例中,`cachedNames`会缓存该实现类上注解的`name`,`cachedActivates`会缓存`name`到`@Activate`的关系,`cachedClasses`会缓存这个实现类的实例.
+然后,`ProtocolFilterWrapper`这个类,会对`Filter`做一个包装,通过`buildInvokerChain`这个方法,构造了一个过滤的链.并在`Protocol`类的`export`和`import`方法里,都会包装进去.所以,就实现了对`provider`和`consumer`的`filter`.
 
 
 
