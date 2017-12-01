@@ -10,7 +10,7 @@ header-img: ""
 看`Dubbo`的源码,特别是debug的时候,会发现`ExtensionLoader`的出现频率非常高.刚开始的时候不怎么理解,但通过一遍遍的调试,结合官方的文档,才逐步发现`ExtensionLoader`的精妙.
 
 从dubbo项目的启动谈起.dubbo的Main入口如下:
-```
+```java
 public class Main {
 
     public static final String CONTAINER_KEY = "dubbo.container";
@@ -94,7 +94,7 @@ public class Main {
 `ExtensionLoader<T>`没有公共的构造函数,提供了 `public static <T> ExtensionLoader<T> getExtensionLoader(Class<T> type)`来获取对应class的`ExtensionLoader`(扩展点加载类)
 
 
-```
+```java
 //对外暴露的获取ExtensionLoader的方法
 public static <T> ExtensionLoader<T> getExtensionLoader(Class<T> type) {
     if (type == null) 
@@ -134,7 +134,7 @@ private ExtensionLoader(Class<?> type) {
 
 先看`ExtensionLoader.getExtensionLoader(ExtensionFactory.class)`
 `ExtensionFactory`本身被`SPI`标注,是生成扩展类的工厂: 指定`class type`和`name`,可以获取相应的Extension(T)
-```
+```java
 @SPI
 public interface ExtensionFactory {
 
@@ -151,7 +151,7 @@ public interface ExtensionFactory {
 初始化完,回到`ExtensionLoader(Container)`的构造函数,会调用`ExtensionLoader<ExtensionFactory>`实例的`getAdaptiveExtension()`方法
 一系列的方法调用如下:
 
-```
+```java
 //这个方法就是去获取自适应的扩展类
 //默认从缓存中拿,第一次获取的时候,缓存中没有,则会初始化一次
 public T getAdaptiveExtension() {
@@ -382,13 +382,13 @@ spring=com.alibaba.dubbo.config.spring.extension.SpringExtensionFactory
 
 `cachedNames`会存`spring`和`spi`
 `cachedClasses`是一个`Holder`,可以持有一个实例,会持有一个`name->class`的`map`:
-> `sping -> SpringExtensionFactory`
-  `spi -> SpiExtensionFactory`
+> `sping -> SpringExtensionFactory`    
+`spi -> SpiExtensionFactory`
 
 `cachedAdaptiveClass`会存`AdaptiveExtensionFactory`
 在`createAdaptiveExtension`方法里,会实例化`AdaptiveExtensionFactory`,下面来看下这个类
 
-```
+```java
 @Adaptive
 public class AdaptiveExtensionFactory implements ExtensionFactory {
     
@@ -498,11 +498,10 @@ private T createExtension(String name) {
 ### loader.getDefaultExtensionName()
 
 
-在`String config = ConfigUtils.getProperty(CONTAINER_KEY, loader.getDefaultExtensionName());`里
-会走到ExtensionLoader<Container>的`loadExtensionClasses`方法,
+在`String config = ConfigUtils.getProperty(CONTAINER_KEY, loader.getDefaultExtensionName());`里,会走到`ExtensionLoader<Container>`的`loadExtensionClasses`方法,
 该方法里,会加载所有`META-INF/dubbo/com.alibaba.dubbo.container.Container`里配置过的,如`spring`,`log4j`,`logback`三种容器
-而由于`Container`的`SPI`注解里填了默认值`spring,所以`会把`spring`存到`cachedDefaultName`中
-```
+而由于`Container`的`SPI`注解里填了默认值`spring`,所以会把`spring`存到`cachedDefaultName`中
+```java
 @SPI("spring")
 public interface Container {
     
@@ -525,7 +524,7 @@ public interface Container {
 在这个方法被调用时,对于`SpringContainer`,便会加载所有配置过的bean到`ApplicationContext`
 
 对于一个向外暴露接口的服务提供者,我们通常会声明成下面这样:
-```
+```xml
     <bean id="xxxService" class="com.alibaba.dubbo.config.spring.ServiceBean">
         <property name="interface" value="com.xxx.api.XXXService"/>
         <property name="ref" ref="xXXServiceImpl"/>
@@ -539,7 +538,7 @@ public interface Container {
 ```
 它作为`ServiceBean`,在spring的初始化时,又会触发一系列ExtensionLoader的加载
 
-```
+```java
 ServiceBean<T> extends ServiceConfig<T>
 
 public class ServiceConfig<T> extends AbstractServiceConfig {
@@ -559,7 +558,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
 这条链路里,`cachedDefaultName`会被填充为`dubbo`(因为Protocol的SPI注解里给了默认值),`cachedClasses`会缓存所有`Protocol`的实现类
 但是由于没有类有声明`@Adaptive`,所以会走到`createAdaptiveExtensionClass`,动态生成一个实现类,生成后的代码如下:
 
-```
+```java
 package com.alibaba.dubbo.rpc;
 
 import com.alibaba.dubbo.common.extension.ExtensionLoader;
@@ -647,7 +646,7 @@ dubbo在整体架构上定义了一系列的spi接口,并给出了所有默认�
 dubbo框架里大量使用了缓存,可以通过`ExtensionLoader`大致看一下:
 
 
-```
+```java
 //看一下ExtensionLoader的静态成员变量,这是全局的缓存:
 
 	//所有标注了SPI注解的接口对应的`ExtensionLoader`
