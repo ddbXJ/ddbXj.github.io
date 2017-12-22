@@ -4,7 +4,7 @@ title:      "dubbo扩展点加载机制分析"
 subtitle:   "dubbo extension loader"
 date:       2017-11-26
 author:     "lee"
-header-img: ""
+header-img: "img/back.jpeg"
 ---
 
 看`Dubbo`的源码,特别是debug的时候,会发现`ExtensionLoader`的出现频率非常高.刚开始的时候不怎么理解,但通过一遍遍的调试,结合官方的文档,才逐步发现`ExtensionLoader`的精妙.

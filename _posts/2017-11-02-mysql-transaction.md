@@ -4,7 +4,7 @@ title:      "mysql锁和事务分析"
 subtitle:   "mysql,spring transaction"
 date:       2017-11-02
 author:     "lee"
-header-img: ""
+header-img: "img/back.jpeg"
 ---
 
 

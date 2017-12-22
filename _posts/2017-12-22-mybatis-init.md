@@ -4,7 +4,7 @@ title:      "MyBatis整合Spring:初始化相关问题研究"
 subtitle:   "MyBatis,Spring,MapperScannerConfigurer"
 date:       2017-12-22
 author:     "lee"
-header-img: ""
+header-img: "img/back.jpeg"
 ---
 
 主要围绕三个问题对源码进行研究
