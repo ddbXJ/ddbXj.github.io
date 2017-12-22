@@ -53,7 +53,7 @@ dao层结构:
 |        |    |       |——dto                         //系统生成mapper使用的参数实体
 |        |    |       |——generatedMapper             //系统生成mapper
 |        |    |——resources
-|        |        |——com.xxx.dao.mapper              //mybatis映射文件,都是xxx.xml格式
+|        |        |——com.xxx.dao                     //mybatis映射文件,都是xxx.xml格式
 |        |            |——generatedMapper
 ```
 
