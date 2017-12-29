@@ -56,9 +56,9 @@ kramdown:
 # Analytics settings
 # Baidu Analytics
 # ba_track_id: 
-# Google Analytics
-# ga_track_id: ''            # Format: UA-xxxxxx-xx
-# ga_domain: 
+Google Analytics
+ga_track_id: 'UA-111694978-1'            # Format: UA-xxxxxx-xx
+ga_domain: ddbxj.net
 
 
 
