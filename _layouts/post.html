@@ -53,6 +53,8 @@ layout: default
 
                 <hr>
 
+                <div id="gitalk-container"></div>
+
                 {% if site.duoshuo_share && site.duoshuo_username %}
                 <!-- 多说 Share start -->
                 </style>
@@ -152,6 +154,21 @@ layout: default
         </div>
     </div>
 </article>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '61c892e530987a9f19e1',
+      clientSecret: 'd8797598362fc38e7c3f022e04f843e6339a04cc',
+      repo: 'ddbXj.github.io',
+      owner: 'ddbXJ',
+      admin: ['ddbXJ'],
+    })
+
+    gitalk.render('gitalk-container')
+</script>
 
 {% if site.duoshuo_username %}
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
