@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "MyBatis整合Spring:初始化相关问题研究"
+title:      "MyBatis整合Spring:初始化相关问题"
 subtitle:   "MyBatis,Spring,MapperScannerConfigurer"
 date:       2017-12-22
 author:     "lee"

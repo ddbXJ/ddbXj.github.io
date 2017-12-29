@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "快速搭建博客"
-subtitle:   "Github page + GoDaddy购买域名 + DNSPOD + Jekyll"
+title:      "搭建博客"
+subtitle:   "Github page,GoDaddy,DNSPOD,Jekyll"
 date:       2017-10-08
 author:     "lee"
 header-img: "img/back.jpeg"

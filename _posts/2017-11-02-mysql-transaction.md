@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "mysql锁和事务分析"
+title:      "mysql锁和spring事务相关问题"
 subtitle:   "mysql,spring transaction"
 date:       2017-11-02
 author:     "lee"
