@@ -129,7 +129,7 @@ private ExtensionLoader(Class<?> type) {
 ```
 
 下面这个图先给出`ExtensionLoader.getExtensionLoader(ExtensionFactory.class).getAdaptiveExtension()`的调用图解,后面代码具体分析
-![extensionFactory](/img/extensionFactory.jpg)
+![extensionFactory](/assets/images/extensionFactory.jpg)
 
 
 先看`ExtensionLoader.getExtensionLoader(ExtensionFactory.class)`

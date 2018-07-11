@@ -108,7 +108,7 @@ AopService aopService = (AopService) context.getBean("proxyFactoryBean");
 `proxyFactoryBean`在被初始化时,会被装载进所有有关aop的信息,包括 `通知类` ,和 `切入点` 等,并持有 `target` 的实例,变成该实例的代理对象  
 所以获得到的`aopService`实际上是`aopServiceImpl`实例的代理对象.
 ###### 调用图解
-![aop1](/img/aop1.jpg)
+![aop1](/assets/images/aop1.jpg)
 ###### 详细分析
 在初始化上下文的时候,配置在`aop.xml`里的`bean`会被装配进`bean工厂` ,由于`ProxyFactoryBean`实现了`FactoryBean`接口,所以在调用`applicationContext.getBean("proxyFactoryBean")`的时候,会调用到`ProxyFactoryBean.getObject()`方法
 ```java
@@ -282,7 +282,7 @@ aopService.sayHello();
 ###### 简单解释
 这行的调用,实际会通过代理对象去调用目标对象`(target)`的方法,在调用过程中,所有切面的工作,都会由代理来完成.
 ###### 调用图解
-![aop2](/img/aop2.jpg)
+![aop2](/assets/images/aop2.jpg)
 ###### 详细分析
 AOP联盟`(aopalliance)`规约了一系列AOP相关接口.  
 `MethodInvocation`接口继承于`Invocation`,`Invocation`继承于`Joinpoint`接口,`Joinpoint`接口里定义了`proceed()`方法:  

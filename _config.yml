@@ -1,96 +1,110 @@
-# Site settings
-title: ""
-SEOTitle: ddbxj's Blog
-header-img: img/front.jpeg
-email: lxj9207@gmail.com
-description: ""
-keyword: ""
-url: "http://ddbxj.net"              # your host, for absolute URL
-#baseurl: "/blog"         # for example, '/blog' if your blog hosted on 'host/blog'
+# This is the default format. 
+# For more see: http://jekyllrb.com/docs/permalinks/
+permalink: /:categories/:year/:month/:title.html
 
-
-
-# SNS settings
-RSS: false
-github_username: ddbXJ
-
-
-
-# Build settings
-# from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
+exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
 highlighter: rouge
-permalink: pretty
-paginate: 10
-exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
-anchorjs: no                          # if you want to customize anchor. check out line:181 of `post.html`
 
+# Themes are encouraged to use these universal variables 
+# so be sure to set them if your theme uses them.
+#
+title : ddbXJ's Blog
+tagline: Code
+author :
+  name : ddbXJ
+  email : lxj9207@gmail.com
+  github : ddbXJ
+  twitter : 
+  feedburner : 
 
+# The production_url is only used when full-domain names are needed
+# such as sitemap.txt 
+# Most places will/should use BASE_PATH to make the urls
+#
+# If you have set a CNAME (pages.github.com) set your custom domain here.
+# Else if you are pushing to username.github.io, replace with your username.
+# Finally if you are pushing to a GitHub project page, include the project name at the end.
+#
+production_url : https://ddbxj.net
 
-# Gems
-# from PR#40, to support local preview for Jekyll 3.0
-plugins: [jekyll-paginate]
+# All Jekyll-Bootstrap specific configurations are namespaced into this hash
+#
+JB :
+  version : 0.3.0
 
+  # All links will be namespaced by BASE_PATH if defined.
+  # Links in your website should always be prefixed with {{BASE_PATH}}
+  # however this value will be dynamically changed depending on your deployment situation.
+  #
+  # CNAME (http://yourcustomdomain.com)
+  #   DO NOT SET BASE_PATH 
+  #   (urls will be prefixed with "/" and work relatively)
+  #
+  # GitHub Pages (http://username.github.io)
+  #   DO NOT SET BASE_PATH 
+  #   (urls will be prefixed with "/" and work relatively)
+  #
+  # GitHub Project Pages (http://username.github.io/project-name)
+  #
+  #   A GitHub Project site exists in the `gh-pages` branch of one of your repositories.
+  #  REQUIRED! Set BASE_PATH to: http://abhn.github.io/
+  #
+  # CAUTION:
+  #   - When in Localhost, your site will run from root "/" regardless of BASE_PATH
+  #   - Only the following values are falsy: ["", null, false]
+  #   - When setting BASE_PATH it must be a valid url.
+  #     This means always setting the protocol (http|https) or prefixing with "/"
+  BASE_PATH : false
 
+  # By default, the asset_path is automatically defined relative to BASE_PATH plus the enabled theme.
+  # ex: [BASE_PATH]/assets/themes/[THEME-NAME]
+  #
+  # Override this by defining an absolute path to assets here.
+  # ex: 
+  #   http://s3.amazonaws.com/yoursite/themes/watermelon
+  #   /assets
+  #
+  ASSET_PATH : false
 
-# Markdown settings
-# replace redcarpet to kramdown,
-# although redcarpet can auto highlight code, the lack of header-id make the catalog impossible, so I switch to kramdown
-# document: http://jekyllrb.com/docs/configuration/#kramdown
-markdown: kramdown
-kramdown:
-  input: GFM                            # use Github Flavored Markdown !important
+  # These paths are to the main pages Jekyll-Bootstrap ships with.
+  # Some JB helpers refer to these paths; change them here if needed.
+  #
+  # archive_path: /archive.html
+  # categories_path : /categories.html
+  tags_path : /tags.html
+  atom_path : /atom.xml
+  rss_path : /rss.xml
 
+  # Settings for comments helper
+  # Set 'provider' to the comment provider you want to use.
+  # Set 'provider' to false to turn commenting off globally.
+  #
+  # comments :
+  #   provider : disqus
+  #   disqus :
+  #     short_name : nagekar
+   
+  # Settings for analytics helper
+  # Set 'provider' to the analytics provider you want to use.
+  # Set 'provider' to false to turn analytics off globally.
+  #        
 
-
-# Disqus settings
-#disqus_username: _your_disqus_short_name_
-
-# Duoshuo settings
-# duoshuo_username: 
-# Share component is depend on Comment so we can NOT use share only.
-# duoshuo_share: true                     # set to false if you want to use Comment without Sharing
-
-
-
-
-# Analytics settings
-# Baidu Analytics
-# ba_track_id: 
-# Google Analytics
-ga_track_id: 'UA-111694978-1'            # Format: UA-xxxxxx-xx
-ga_domain: ddbxj.net
-
-
-
-# Sidebar settings
-sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "岁月不饶人 我亦未曾饶过岁月"
-sidebar-avatar: http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoXSgXJscnHSRUjykxFvVnGEmAx6MZtN99M4BMX2XCXqXMd4Ew5ibtC5dV0rQhvdRtIpdTmJgYeECg/132
-
-
-
-# Featured Tags
-# featured-tags: true                     # whether or not using Feature-Tags
-# featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
-
-
-
-# Friends
-# friends: [
-#     {
-#         title: "",
-#         href: ""
-#     },{
-#         title: "Foo",
-#         href: "#"
-#     },{
-#         title: "Bar",
-#         href: "#"
-#     },{
-#         title: "Example Friends",
-#         href: "#"
-#     },{
-#         title: "It helps SEO",
-#         href: "#"
-#     }
-# ]
+  # Settings for sharing helper. 
+  # Sharing is for things like tweet, plusone, like, reddit buttons etc.
+  # Set 'provider' to the sharing provider you want to use.
+  # Set 'provider' to false to turn sharing off globally.
+  #
+  # sharing :
+  #   provider : false
+    
+  # Settings for all other include helpers can be defined by creating 
+  # a hash with key named for the given helper. ex:
+  #
+  #   pages_list :
+  #     provider : "custom"   
+  #
+  # Setting any helper's provider to 'custom' will bypass the helper code
+  # and include your custom code. Your custom file must be defined at:
+  #   ./_includes/custom/[HELPER]
+  # where [HELPER] is the name of the helper you are overriding.
+  
