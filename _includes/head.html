@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/bulma.css"/>
   <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/custom.css"/>
   <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/github-markdown.css"/>
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/syntax.css"/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
 
@@ -26,5 +27,21 @@
       {{ page.title }} &middot; {{ site.title }}
     {% endif %}
   </title>
+
+  <style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
 
 </head>
