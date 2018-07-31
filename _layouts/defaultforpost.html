@@ -67,92 +67,13 @@
     </nav>
 
     <div class="tile is-parent">
-      <div class="tile is-8 is-child main">
+      <div class="tile is-12 is-child main">
 
         {{ content }}
 
       </div>
 
-      <div class="tile is-4 is-child">
-        <div class="tile is-parent is-vertical sidebar">
-
-          <div class="tile is-child widget">
-
-            <div class="card">
-              <header class="card-header">
-                <p class="card-header-title nice-title">
-                  Recent Posts
-                </p>
-              </header>
-              <div class="card-content">
-                <div class="content nice-text">
-                  <ul>
-                  {% for post in site.posts limit:3 %}
-                  <li><a href="{{ post.url }}">
-                    {{ post.title }}
-                  </a></li>
-                  {% endfor %}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="tile is-child widget">
-
-            <div class="card">
-              <header class="card-header">
-                <p class="card-header-title nice-title">
-                  Me and My Dog
-                </p>
-              </header>
-              <div class="card-content">
-                <div class="content nice-text">
-                  <img src="{{ site.baseurl }}/assets/images/me.jpg"/>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- <div class="tile is-child widget">
-            <div class="card">
-              <header class="card-header">
-                <p class="card-header-title nice-title">
-                  还没想好这里放啥
-                </p>
-              </header>
-              <div class="card-content">
-                <div class="content nice-text">
-                  <ul>
-                    <li>
-                      <a href="https://xkcd.com">xkcd</a>
-                    </li>
-                    <li>
-                      <a href="http://commitstrip.com">Commit Strip</a>
-                    </li>
-                    <li>
-                      <a href="http://www.smbc-comics.com">SMBC Comics</a>
-                    </li>
-                    <li>
-                      <a href="https://blog.codinghorror.com">Coding Horror</a>
-                    </li>
-                    <li>
-                      <a href="http://waitbutwhy.com">Wait Buy Why</a>
-                    </li>
-                    <li>
-                      <a href="https://simplysoch.wordpress.com/">Simply Soch</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div> -->
-
-        </div>
-
-      </div>
-
+    
     </div>
 
   </div>
